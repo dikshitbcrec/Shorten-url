@@ -39,6 +39,7 @@ public class TinyUrlServiceImpl implements TinyUrlService {
         // Set the short code in the entity
         UrlEntity urlEntity = new UrlEntity();
         urlEntity.setShortCode(shortCode);
+        urlEntity.setCreatedAT();
         urlEntity.setOriginalUrl(urlRequest.url());
         this.urlRepository.save(urlEntity);
         return BASE_URL+"/"+shortCode;

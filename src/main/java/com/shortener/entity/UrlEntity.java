@@ -57,7 +57,7 @@ public class UrlEntity {
         return createdAt;
     }
 
-    public void setCreatedAT(Instant timeStamp) {
-        this.createdAt = timeStamp;
+    public void setCreatedAT() {
+        this.createdAt = Instant.now();
     }
 }
