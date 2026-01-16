@@ -1,10 +1,10 @@
 package com.shortener.controller;
 
 import com.shortener.dto.UrlRequest;
+import com.shortener.dto.UrlResponse;
 import com.shortener.service.serviceImpl.TinyUrlServiceImpl;
 
 import io.micrometer.common.util.StringUtils;
-import jakarta.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+@CrossOrigin("${base.cors:http://localhost:3000/}")
 @RestController
 public class ShortnerController {
 
@@ -28,11 +30,19 @@ public class ShortnerController {
     }
 
     @PostMapping("/tiny-url")
-    public ResponseEntity<String> shortUrl(@Validated @RequestBody UrlRequest entity) {
+    public ResponseEntity<UrlResponse> shortUrl(@Validated @RequestBody UrlRequest entity) {
         log.info("Request received for shortening URL: {}"+entity.url());
-        String shortUrl = tinyUrlServiceImpl.generateShortUrl(entity);
-        return new ResponseEntity<String>(shortUrl, HttpStatus.OK);
+        UrlResponse shortUrl = tinyUrlServiceImpl.generateShortUrl(entity);
+        return new ResponseEntity<UrlResponse>(shortUrl, HttpStatus.OK);
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalCount() {
+         log.info("totalCountMethod get Invoked()");
+         return  new ResponseEntity<Long>(tinyUrlServiceImpl.getTotalCount(), HttpStatus.OK);
+       
+    }
+    
 
 
     @GetMapping("/{id}")

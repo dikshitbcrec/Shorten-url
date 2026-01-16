@@ -1,8 +1,10 @@
 package com.shortener.service;
 
 import com.shortener.dto.UrlRequest;
+import com.shortener.dto.UrlResponse;
 
 public interface TinyUrlService {
-    String generateShortUrl(UrlRequest urlEntity);
+    UrlResponse generateShortUrl(UrlRequest urlEntity);
     String getUrl(String shortCode);
+    Long getTotalCount();
 }
