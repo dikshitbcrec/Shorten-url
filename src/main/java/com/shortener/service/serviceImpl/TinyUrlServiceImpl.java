@@ -14,6 +14,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -53,8 +54,8 @@ public class TinyUrlServiceImpl implements TinyUrlService {
         urlEntity.setCreatedAT();
         urlEntity.setOriginalUrl(urlRequest.url());
         this.urlRepository.save(urlEntity);
-        this.incrementGlobalCounter();
-        return new UrlResponse( BASE_URL+"/"+shortCode);
+        Long count = this.incrementGlobalCounter();
+        return new UrlResponse( BASE_URL+"/"+shortCode,count);
     }
 
     @Override
@@ -83,9 +84,17 @@ public class TinyUrlServiceImpl implements TinyUrlService {
         }
     }
 
-    public void incrementGlobalCounter() {
-    Query query = new Query(Criteria.where("_id").is(1));
-    Update update = new Update().inc("count", 1L);
-    mongoTemplate.upsert(query, update, UrlCounter.class);
-}
+    public long incrementGlobalCounter() {
+        Query query = new Query(Criteria.where("_id").is(1));
+        Update update = new Update().inc("count", 1L);
+
+        // Options: return the updated document after modification, create if not exists
+        FindAndModifyOptions options = new FindAndModifyOptions()
+                .returnNew(true)   // return the document after update
+                .upsert(true);     // create if it doesn't exist
+
+        UrlCounter counter = mongoTemplate.findAndModify(query, update, options, UrlCounter.class);
+
+        return counter.getCount();
+    }
 }

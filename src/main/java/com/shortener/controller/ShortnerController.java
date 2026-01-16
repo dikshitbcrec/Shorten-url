@@ -42,8 +42,6 @@ public class ShortnerController {
          return  new ResponseEntity<Long>(tinyUrlServiceImpl.getTotalCount(), HttpStatus.OK);
        
     }
-    
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable String id) {
