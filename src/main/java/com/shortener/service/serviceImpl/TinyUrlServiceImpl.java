@@ -32,6 +32,7 @@ public class TinyUrlServiceImpl implements TinyUrlService {
     private final UrlCounterRepository counterRepository;
     private final Base62Converter base62Converter;
     private final MongoTemplate mongoTemplate;
+    private final Integer LENGTH_OF_CHARRACTER =7;
 
     public TinyUrlServiceImpl(UrlRepository urlRepository, Base62Converter base62Converter,UrlCounterRepository counterRepository,MongoTemplate mongoTemplate) {
         this.urlRepository = urlRepository;
@@ -45,7 +46,7 @@ public class TinyUrlServiceImpl implements TinyUrlService {
         String shortCode = "";
         // Keep generating until a unique code is found
         do {
-            shortCode = this.base62Converter.base62Encoder(7); // Use your random Base62 generator
+            shortCode = this.base62Converter.base62Encoder(LENGTH_OF_CHARRACTER); // Use your random Base62 generator
         } while (urlRepository.existsByShortCode(shortCode));
 
         // Set the short code in the entity
@@ -73,7 +74,7 @@ public class TinyUrlServiceImpl implements TinyUrlService {
 
     @Override
     public Long getTotalCount() {
-         logger.info("getUrl() method invoked");
+         logger.info("getCount() method invoked");
         Optional<UrlCounter> counterDetails= this.counterRepository.findById(1);
        
 
