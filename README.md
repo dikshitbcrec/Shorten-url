@@ -143,7 +143,9 @@ docker run -p 8080:8080 -e DB_URL=mongodb://host:27017/tinyurl url-shortener
 
 ## Live Production
 
-🚀 **Deployed on:** Render.
+🚀 **Deployed Backend:** Render.
+🚀 **Deployed Ui:** https://shorten-url-ui-tau.vercel.app/.
+    
 
 **Environment Variables:**
 - `PORT=8080`
