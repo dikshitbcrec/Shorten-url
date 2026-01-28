@@ -8,6 +8,7 @@ Spring Boot application that generates short URLs using Base62 encoding with Mon
 - Spring Boot 3.5.9
 - MongoDB
 - Maven
+- [React Code]([https://example.com](https://github.com/dikshitbcrec/shorten-url-ui)
 
 ## Features
 
